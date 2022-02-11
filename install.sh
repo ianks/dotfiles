@@ -10,7 +10,7 @@ echo "👋 Hello! Your dotfiles will be setup momentarily..."
 if ! command -v yadm > /dev/null; then
   echo "Installing and bootstraping YADM (for dotfile syncing)..."
 
-  curl -o /tmp/yadm-bootstrap -L "https://raw.githubusercontent.com/TheLocehiliosan/yadm/$YADM_COMMIT/bootstrapS"
+  curl -o /tmp/yadm-bootstrap -L "https://raw.githubusercontent.com/TheLocehiliosan/yadm/$YADM_COMMIT/bootstrap"
 
   if ! echo "$YADM_BOOTSTRAP_CHECKSUM  /tmp/yadm-bootstrap" | shasum -a 256 -c; then
     echo "⚠️ Checksum failed for yadm bootstrap"
