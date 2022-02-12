@@ -2,8 +2,6 @@
 
 set -e
 
-YADM_VERSION="3.1.1"
-YADM_CHECKSUM="9c51f08b9be8658708b718c00c93024b122d83b6a4244836cb6d194064160d18"
 DOTFILES_REPO="https://github.com/ianks/dotfiles-repo"
 
 install_yadm() {
@@ -11,20 +9,21 @@ install_yadm() {
     echo "Detected installed yadm, no need to install"
   else
     echo "Installing and bootstraping YADM (for dotfile syncing)..."
-    curl -so /tmp/yadm "https://raw.githubusercontent.com/TheLocehiliosan/yadm/$YADM_VERSION/yadm"
-
-    if ! echo "$YADM_CHECKSUM  /tmp/yadm" | shasum -a 256 -c; then
-      echo "⚠️ YADM checksum mismatch, exiting"
+    if command -v apt-get > /dev/null; then
+      sudo apt-get install -y yadm
+    elif command -v brew > /dev/null; then
+      brew install yadm
+    elif command -v yay > /dev/null; then
+      yay -Syu yadm-git
+    else
+      echo "⚠️ Could not find a suitable package manager for yadm"
       exit 1
     fi
-
-    chmod +x /tmp/yadm
-    sudo mv /tmp/yadm /usr/local/bin/
   fi
 }
 
 echo "👋 Hello! Your dotfiles will be setup momentarily..."
 install_yadm
-[ ! -d "$HOME/.local/share/yadm/repo.git" ] && yadm clone "$DOTFILES_REPO"
+yadm clone "$DOTFILES_REPO" || true
 chmod +x "$HOME/.config/yadm/bootstrap" && yadm bootstrap
 echo "✅ Done!"
