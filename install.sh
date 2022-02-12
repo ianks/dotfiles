@@ -25,6 +25,6 @@ install_yadm() {
 
 echo "👋 Hello! Your dotfiles will be setup momentarily..."
 install_yadm
-[[ ! -d "$HOME/.local/share/yadm/repo.git" ]] && yadm clone "$DOTFILES_REPO"
+[ ! -d "$HOME/.local/share/yadm/repo.git" ] && yadm clone "$DOTFILES_REPO"
 chmod +x "$HOME/.config/yadm/bootstrap" && yadm bootstrap
 echo "✅ Done!"
