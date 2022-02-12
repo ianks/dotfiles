@@ -2,6 +2,8 @@
 
 set -e
 
+DOTFILES_REPO="https://github.com/ianks/dotfiles-repo"
+
 install_yadm() {
   if command -v yadm; then
     echo "Detected installed yadm, no need to install"
@@ -21,9 +23,7 @@ install_yadm() {
 }
 
 echo "👋 Hello! Your dotfiles will be setup momentarily..."
-
 install_yadm
-
+yadm clone "$DOTFILES_REPO"
 chmod +x "$HOME/.config/yadm/bootstrap" && yadm bootstrap
-
 echo "✅ Done!"
