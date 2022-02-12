@@ -24,6 +24,6 @@ echo "👋 Hello! Your dotfiles will be setup momentarily..."
 
 install_yadm
 
-yadm bootstrap
+chmod +x "$HOME/.config/yadm/bootstrap" && yadm bootstrap
 
 echo "✅ Done!"
