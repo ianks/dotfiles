@@ -1,28 +1,29 @@
 #!/bin/sh
 
-DOTFILE_REPO="https://github.com/ianks/dotfiles-repo"
-YADM_BOOTSTRAP_CHECKSUM="a263208a09756079e4b1f1776a656d62ddc5d945d75241cb67d6ad7f5b87a983"
-YADM_COMMIT="3d82aff3e8140361fca18f664fffa64dfd33296e"
+set -e
+
+install_yadm() {
+  if command -v yadm; then
+    echo "Detected installed yadm, no need to install"
+  else
+    echo "Installing and bootstraping YADM (for dotfile syncing)..."
+    if command -v apt-get > /dev/null; then
+      sudo apt-get install -y yadm
+    elif command -v brew; then
+      brew install yadm
+    elif command -v yay; then
+      yay -Syu yadm-git
+    else
+      echo "⚠️ Could not find a suitable package manager for yadm"
+      exit 1
+    fi
+  fi
+}
 
 echo "👋 Hello! Your dotfiles will be setup momentarily..."
 
-# Bootstrap yadm to install dotfiles
-if ! command -v yadm > /dev/null; then
-  echo "Installing and bootstraping YADM (for dotfile syncing)..."
+install_yadm
 
-  curl -o /tmp/yadm-bootstrap -L "https://raw.githubusercontent.com/TheLocehiliosan/yadm/$YADM_COMMIT/bootstrap"
-
-  if ! echo "$YADM_BOOTSTRAP_CHECKSUM  /tmp/yadm-bootstrap" | shasum -a 256 -c; then
-    echo "⚠️ Checksum failed for yadm bootstrap"
-    exit 1
-  fi
-
-  chmod +x /tmp/yadm-bootstrap
-  /tmp/yadm-bootstrap "$DOTFILE_REPO"
-  rm /tmp/yadm-bootstrap
-else
-  echo "YADM config already found, now bootstraping..."
-  yadm bootstrap
-fi
+yadm bootstrap
 
 echo "✅ Done!"
