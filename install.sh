@@ -24,6 +24,5 @@ install_yadm() {
 
 echo "👋 Hello! Your dotfiles will be setup momentarily..."
 install_yadm
-yadm clone "$DOTFILES_REPO" || true
-chmod +x "$HOME/.config/yadm/bootstrap" && yadm bootstrap
+yadm clone --bootstrap "$DOTFILES_REPO" || true
 echo "✅ Done!"
